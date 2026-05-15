@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="EcoRecompensa - Aplastadora automática de latas con Arduino Nano, neumática y Raspberry Pi 5. Recicla y gana recompensas."/>
   <title>EcoRecompensa — UNAJ Ingeniería Mecatrónica</title>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
   <style>
@@ -183,6 +182,7 @@
       border-radius: 20px;
       padding: 30px;
       box-shadow: var(--shadow-lg);
+      animation: slideUp .55s .1s ease both;
     }
 
     .hero-card-logo {
@@ -195,10 +195,64 @@
       background: var(--surface);
     }
 
+    .hero-card h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+
+    .hero-card > p {
+      font-size: .84rem;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .stat-box {
+      background: var(--surface);
+      border-radius: 10px;
+      padding: 13px 15px;
+      border: 1px solid var(--border);
+    }
+
+    .stat-box .num {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--ink);
+    }
+
+    .stat-box .lbl { font-size: .72rem; color: var(--muted); margin-top: 2px; }
+    .se .num { color: var(--eco); }
+    .ss .num { color: var(--sky); }
+
+    .tag-list { display: flex; flex-wrap: wrap; gap: 7px; }
+
+    .tag {
+      padding: 4px 11px;
+      border-radius: 6px;
+      font-size: .73rem;
+      font-weight: 600;
+    }
+
+    .t-eco  { background: var(--eco-light);   color: var(--eco);   }
+    .t-sky  { background: var(--sky-light);   color: var(--sky);   }
+    .t-amb  { background: var(--amber-light); color: var(--amber); }
+    .t-rose { background: var(--rose-light);  color: var(--rose);  }
+
     /* ── SECTIONS ── */
     .section { padding: 88px 40px; }
     .section-inner { max-width: 1140px; margin: 0 auto; }
     .section-alt  { background: #fff; }
+    .section-dark { background: var(--ink); }
 
     .eyebrow {
       display: inline-block;
@@ -211,7 +265,10 @@
       border-radius: 6px;
     }
 
-    .ey-eco  { background: var(--eco-light); color: var(--eco); }
+    .ey-eco  { background: var(--eco-light);            color: var(--eco);   }
+    .ey-sky  { background: var(--sky-light);            color: var(--sky);   }
+    .ey-amb  { background: var(--amber-light);          color: var(--amber); }
+    .ey-dark { background: rgba(255,255,255,.1);        color: rgba(255,255,255,.75); }
 
     .s-title {
       font-family: 'Syne', sans-serif;
@@ -223,6 +280,8 @@
       margin-bottom: 10px;
     }
 
+    .s-title.od { color: #fff; }
+
     .s-sub {
       font-size: .96rem;
       color: var(--muted);
@@ -230,13 +289,15 @@
       line-height: 1.8;
     }
 
+    .s-sub.od { color: rgba(255,255,255,.5); }
+
     .divider { border: none; border-top: 1px solid var(--border); }
 
     /* ── STEPS ── */
     .steps-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(4,1fr);
+      gap: 18px;
       margin-top: 48px;
     }
 
@@ -244,15 +305,15 @@
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 28px 24px;
+      padding: 26px 22px;
       position: relative;
       overflow: hidden;
-      transition: all .3s;
+      transition: box-shadow .2s, transform .2s;
     }
 
-    .step:hover { box-shadow: var(--shadow-lg); transform: translateY(-6px); }
+    .step:hover { box-shadow: var(--shadow-lg); transform: translateY(-3px); }
 
-    .step-bar { position: absolute; top:0; left:0; right:0; height:4px; }
+    .step-bar { position: absolute; top:0; left:0; right:0; height:3px; }
     .step:nth-child(1) .step-bar { background: var(--eco); }
     .step:nth-child(2) .step-bar { background: var(--sky); }
     .step:nth-child(3) .step-bar { background: var(--amber); }
@@ -266,31 +327,52 @@
       margin-bottom: 12px;
     }
 
-    .step-icon { font-size: 2.1rem; margin-bottom: 14px; display: block; }
+    .step-icon { font-size: 1.9rem; margin-bottom: 12px; display: block; }
 
     .step h3 {
       font-family: 'Syne', sans-serif;
-      font-size: 1.05rem;
+      font-size: .96rem;
       font-weight: 700;
       color: var(--ink);
-      margin-bottom: 8px;
+      margin-bottom: 7px;
     }
 
-    .step p { font-size: .85rem; color: var(--muted); line-height: 1.7; }
+    .step p { font-size: .83rem; color: var(--muted); line-height: 1.65; }
 
-    /* Resto de estilos (tech, carrera, equipo, contacto, footer) se mantienen similares pero puedes expandirlos */
+    /* ── ANIMATIONS ── */
+    @keyframes slideUp {
+      from { opacity:0; transform:translateY(20px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    .fi { opacity:0; transform:translateY(14px); transition: opacity .5s, transform .5s; }
+    .fi.vis { opacity:1; transform:translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      .steps-grid { grid-template-columns: repeat(2,1fr); }
+      .team-grid  { grid-template-columns: repeat(3,1fr); }
+    }
 
     @media (max-width: 768px) {
       nav { padding: 0 18px; }
       .nav-links { display: none; }
       .hero-wrap { grid-template-columns:1fr; padding:96px 20px 56px; gap:36px; }
+      .hero-card { order:-1; }
       .section { padding:60px 20px; }
+      .tech-layout,
+      .carrera-layout,
+      .contact-grid { grid-template-columns:1fr; }
+      .steps-grid { grid-template-columns:1fr; }
+      .team-grid  { grid-template-columns:repeat(2,1fr); }
+      .footer-inner { flex-direction:column; text-align:center; }
+      .contact-bottom { flex-direction:column; align-items:flex-start; }
     }
   </style>
 </head>
 <body>
 
-<!-- NAV -->
+<!-- ══ NAV ══ -->
 <nav>
   <a href="#inicio" class="nav-brand">
     <img src="logo.png" alt="EcoRecompensa" onerror="this.style.display='none'"/>
@@ -305,18 +387,18 @@
   </ul>
 </nav>
 
-<!-- HERO -->
+<!-- ══ HERO ══ -->
 <section id="inicio">
   <div class="hero-wrap">
-    <div>
+    <div style="animation: slideUp .5s ease both;">
       <div class="hero-eyebrow">♻ Proyecto Estudiantil · UNAJ 2025</div>
       <h1>Recicla una lata.<br/>Gana una <em>recompensa</em>.</h1>
       <p class="hero-desc">
-        EcoRecompensa es una aplastadora automática de latas de aluminio controlada por Arduino Nano y Raspberry Pi 5. 
+        EcoRecompensa es una aplastadora automática de latas de aluminio controlada por Arduino Nano y comunicada con Raspberry Pi 5. 
         Sistema neumático inteligente que detecta, aplasta y genera códigos de recompensa en tiempo real.
       </p>
       <div class="hero-actions">
-        <a href="PROYECTO.pdf" target="_blank" class="btn btn-dark">📄 Descargar Proyecto Completo</a>
+        <a href="PROYECTO.pdf" target="_blank" class="btn btn-dark">📄 Descargar Proyecto</a>
         <a href="#funcionamiento" class="btn btn-ghost">Ver cómo funciona →</a>
       </div>
     </div>
@@ -326,8 +408,8 @@
       <h3>EcoRecompensa</h3>
       <p>Sistema inteligente de reciclaje con recompensa automática</p>
       <div class="stat-row">
-        <div class="stat-box se"><div class="num">100%</div><div class="lbl">Automatizado</div></div>
-        <div class="stat-box ss"><div class="num">Real-time</div><div class="lbl">Código único</div></div>
+        <div class="stat-box se"><div class="num">1 lata</div><div class="lbl">= 1 código único</div></div>
+        <div class="stat-box ss"><div class="num">100%</div><div class="lbl">automatizado</div></div>
       </div>
       <div class="tag-list">
         <span class="tag t-eco">Arduino Nano</span>
@@ -341,56 +423,50 @@
 
 <hr class="divider"/>
 
-<!-- FUNCIONAMIENTO -->
+<!-- ══ FUNCIONAMIENTO ══ -->
 <section id="funcionamiento" class="section">
   <div class="section-inner">
     <span class="eyebrow ey-eco">Proceso</span>
-    <h2 class="s-title">¿Cómo funciona?</h2>
-    <p class="s-sub">Cuatro etapas automatizadas transforman tu lata en una recompensa digital.</p>
+    <h2 class="s-title fi">¿Cómo funciona?</h2>
+    <p class="s-sub fi">Sistema completamente automatizado que convierte tu lata en una recompensa digital mediante control neumático y electrónico.</p>
 
     <div class="steps-grid">
-      <div class="step">
+      <div class="step fi">
         <div class="step-bar"></div>
         <div class="step-num">PASO 01</div>
         <span class="step-icon">🥫</span>
         <h3>Inserción y Arranque</h3>
-        <p>El usuario deposita la lata. Al presionar el botón START, el Arduino Nano inicia el ciclo.</p>
+        <p>El usuario deposita la lata y presiona el botón START. El Arduino Nano inicia el ciclo de reciclaje.</p>
       </div>
 
-      <div class="step">
+      <div class="step fi">
         <div class="step-bar"></div>
         <div class="step-num">PASO 02</div>
         <span class="step-icon">↘️</span>
-        <h3>Posicionamiento</h3>
-        <p>El cilindro neumático 1 empuja la lata hacia la zona de aplastado. El sensor ultrasónico detecta su presencia.</p>
+        <h3>Posicionamiento de la lata</h3>
+        <p>Se activa la válvula 3/2 y el cilindro neumático 1 empuja la lata hacia la zona de aplastado. Luego regresa a su posición inicial.</p>
       </div>
 
-      <div class="step">
+      <div class="step fi">
         <div class="step-bar"></div>
         <div class="step-num">PASO 03</div>
         <span class="step-icon">🔨</span>
         <h3>Aplastado</h3>
-        <p>Los cilindros 2 y 3 actúan simultáneamente mediante válvula 5/2, aplastando la lata con fuerza.</p>
+        <p>El sensor ultrasónico detecta la lata y activa la válvula 5/2. Los cilindros neumáticos 2 y 3 actúan simultáneamente para aplastar la lata.</p>
       </div>
 
-      <div class="step">
+      <div class="step fi">
         <div class="step-bar"></div>
         <div class="step-num">PASO 04</div>
         <span class="step-icon">🎟️</span>
-        <h3>Recompensa</h3>
-        <p>La lata cae al contenedor. El Arduino envía "RECICLADA" por serial. La Raspberry Pi genera un código único de recompensa.</p>
+        <h3>Recompensa y Reinicio</h3>
+        <p>La lata aplastada cae al contenedor. El Arduino envía "RECICLADA" por puerto serial. La Raspberry Pi genera un código de recompensa único y el sistema vuelve al estado inicial.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Puedes continuar agregando las secciones de Tecnología, Carrera, Equipo y Contacto según necesites. -->
-
-<footer>
-  <div class="footer-inner">
-    <p>Proyecto desarrollado por estudiantes de Ingeniería Mecatrónica - Universidad Nacional de Juliaca</p>
-  </div>
-</footer>
+<!-- Aquí puedes continuar pegando el resto de tu código original (Tecnología, Carrera, Equipo, Contacto y Footer) -->
 
 </body>
 </html>
