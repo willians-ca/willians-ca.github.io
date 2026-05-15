@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EcoRecompensa — UNAJ Ingeniería Mecatrónica</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:        #0f1117;
+      --ink-soft:   #1e2230;
+      --surface:    #f5f6fa;
+      --card:       #ffffff;
+      --border:     #e2e5ef;
+      --muted:      #6b7280;
+      --body-txt:   #374151;
+
+      --eco:        #16a34a;
+      --eco-light:  #dcfce7;
+      --sky:        #0ea5e9;
+      --sky-light:  #e0f2fe;
+      --amber:      #d97706;
+      --amber-light:#fef3c7;
+      --rose:       #e11d48;
+      --rose-light: #ffe4e6;
+
+      --radius: 14px;
+      --shadow: 0 2px 16px rgba(0,0,0,.07), 0 1px 3px rgba(0,0,0,.05);
+      --shadow-lg: 0 8px 40px rgba(0,0,0,.11), 0 2px 8px rgba(0,0,0,.06);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--surface);
+      color: var(--body-txt);
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      height: 64px;
+      background: rgba(255,255,255,.93);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .nav-brand img {
+      height: 38px; width: 38px;
+      object-fit: contain;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+
+    .nav-brand-text {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: var(--ink);
+    }
+
+    .nav-brand-text span { color: var(--eco); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      padding: 6px 14px;
+      border-radius: 8px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .84rem;
+      font-weight: 500;
+      transition: background .15s, color .15s;
+    }
+
+    .nav-links a:hover { background: var(--eco-light); color: var(--eco); }
+
+    .nav-cta { background: var(--ink) !important; color: #fff !important; font-weight: 600 !important; }
+    .nav-cta:hover { background: #16a34a !important; color: #fff !important; }
+
+    /* ── HERO ── */
+    .hero-wrap {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 128px 40px 90px;
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 64px;
+      align-items: center;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--eco-light);
+      color: var(--eco);
+      font-size: .76rem;
+      font-weight: 700;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 99px;
+      margin-bottom: 22px;
+      border: 1px solid #bbf7d0;
+    }
+
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 800;
+      color: var(--ink);
+      line-height: 1.05;
+      letter-spacing: -.03em;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 em { font-style: normal; color: var(--eco); }
+
+    .hero-desc {
+      font-size: 1.02rem;
+      color: var(--muted);
+      max-width: 480px;
+      line-height: 1.8;
+      margin-bottom: 36px;
+      font-weight: 300;
+    }
+
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    /* ── BTN SYSTEM ── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 26px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: .9rem;
+      text-decoration: none;
+      transition: all .15s;
+      cursor: pointer;
+      border: none;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .btn-dark { background: var(--ink); color: #fff; box-shadow: 0 4px 14px rgba(15,17,23,.18); }
+    .btn-dark:hover { background: #1e2230; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(15,17,23,.24); }
+
+    .btn-ghost { background: transparent; color: var(--ink); border: 1.5px solid var(--border); }
+    .btn-ghost:hover { border-color: var(--ink); background: var(--ink); color: #fff; }
+
+    .btn-eco { background: var(--eco); color: #fff; box-shadow: 0 4px 14px rgba(22,163,74,.22); }
+    .btn-eco:hover { background: #15803d; transform: translateY(-1px); }
+
+    /* Hero card */
+    .hero-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: var(--shadow-lg);
+      animation: slideUp .55s .1s ease both;
+    }
+
+    .hero-card-logo {
+      width: 72px; height: 72px;
+      object-fit: contain;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      padding: 8px;
+      margin-bottom: 18px;
+      background: var(--surface);
+    }
+
+    .hero-card h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+
+    .hero-card > p {
+      font-size: .84rem;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .stat-box {
+      background: var(--surface);
+      border-radius: 10px;
+      padding: 13px 15px;
+      border: 1px solid var(--border);
+    }
+
+    .stat-box .num {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--ink);
+    }
+
+    .stat-box .lbl { font-size: .72rem; color: var(--muted); margin-top: 2px; }
+    .se .num { color: var(--eco); }
+    .ss .num { color: var(--sky); }
+
+    .tag-list { display: flex; flex-wrap: wrap; gap: 7px; }
+
+    .tag {
+      padding: 4px 11px;
+      border-radius: 6px;
+      font-size: .73rem;
+      font-weight: 600;
+    }
+
+    .t-eco  { background: var(--eco-light);   color: var(--eco);   }
+    .t-sky  { background: var(--sky-light);   color: var(--sky);   }
+    .t-amb  { background: var(--amber-light); color: var(--amber); }
+    .t-rose { background: var(--rose-light);  color: var(--rose);  }
+
+    /* ── SECTIONS ── */
+    .section { padding: 88px 40px; }
+    .section-inner { max-width: 1140px; margin: 0 auto; }
+    .section-alt  { background: #fff; }
+    .section-dark { background: var(--ink); }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      padding: 4px 12px;
+      border-radius: 6px;
+    }
+
+    .ey-eco  { background: var(--eco-light);            color: var(--eco);   }
+    .ey-sky  { background: var(--sky-light);            color: var(--sky);   }
+    .ey-amb  { background: var(--amber-light);          color: var(--amber); }
+    .ey-dark { background: rgba(255,255,255,.1);        color: rgba(255,255,255,.75); }
+
+    .s-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.65rem, 3.2vw, 2.5rem);
+      font-weight: 800;
+      color: var(--ink);
+      line-height: 1.1;
+      letter-spacing: -.02em;
+      margin-bottom: 10px;
+    }
+
+    .s-title.od { color: #fff; }
+
+    .s-sub {
+      font-size: .96rem;
+      color: var(--muted);
+      max-width: 520px;
+      line-height: 1.8;
+    }
+
+    .s-sub.od { color: rgba(255,255,255,.5); }
+
+    .divider { border: none; border-top: 1px solid var(--border); }
+
+    /* ── STEPS ── */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      gap: 18px;
+      margin-top: 48px;
+    }
+
+    .step {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 26px 22px;
+      position: relative;
+      overflow: hidden;
+      transition: box-shadow .2s, transform .2s;
+    }
+
+    .step:hover { box-shadow: var(--shadow-lg); transform: translateY(-3px); }
+
+    .step-bar { position: absolute; top:0; left:0; right:0; height:3px; }
+    .step:nth-child(1) .step-bar { background: var(--eco); }
+    .step:nth-child(2) .step-bar { background: var(--sky); }
+    .step:nth-child(3) .step-bar { background: var(--amber); }
+    .step:nth-child(4) .step-bar { background: var(--rose); }
+
+    .step-num {
+      font-size: .68rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .step-icon { font-size: 1.9rem; margin-bottom: 12px; display: block; }
+
+    .step h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: .96rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 7px;
+    }
+
+    .step p { font-size: .83rem; color: var(--muted); line-height: 1.65; }
+
+    /* ── TECH ── */
+    .tech-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 52px;
+      align-items: center;
+      margin-top: 48px;
+    }
+
+    .tech-img {
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-lg);
+      aspect-ratio: 4/3;
+    }
+
+    .tech-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .tech-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .tech-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 13px;
+      padding: 14px 16px;
+      background: var(--surface);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      transition: border-color .15s;
+    }
+
+    .tech-item:hover { border-color: var(--sky); }
+
+    .ti {
+      width: 34px; height: 34px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    .ti-e { background: var(--eco-light); }
+    .ti-s { background: var(--sky-light); }
+    .ti-a { background: var(--amber-light); }
+    .ti-r { background: var(--rose-light); }
+    .ti-k { background: #e5e7eb; }
+
+    .tech-item strong { display: block; font-size: .88rem; font-weight: 600; color: var(--ink); margin-bottom: 2px; }
+    .tech-item span   { font-size: .8rem; color: var(--muted); }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+
+    /* ── CARRERA ── */
+    .carrera-layout {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 52px;
+      align-items: center;
+      margin-top: 48px;
+    }
+
+    .unaj-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--sky-light);
+      border: 1px solid #bae6fd;
+      border-radius: 10px;
+      padding: 10px 16px;
+      margin-bottom: 20px;
+    }
+
+    .unaj-badge img {
+      height: 32px; width: 32px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+
+    .unaj-badge strong { display: block; font-size: .84rem; font-weight: 700; color: var(--sky); }
+    .unaj-badge span   { font-size: .74rem; color: var(--muted); }
+
+    .carrera-text p {
+      font-size: .93rem;
+      color: var(--muted);
+      line-height: 1.82;
+      margin-bottom: 13px;
+    }
+
+    .carrera-img {
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .carrera-img img { width: 100%; height: 380px; object-fit: cover; display: block; }
+
+    /* ── EQUIPO ── */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(5,1fr);
+      gap: 16px;
+      margin-top: 48px;
+    }
+
+    .member {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: var(--radius);
+      padding: 22px 14px 18px;
+      text-align: center;
+      transition: background .18s, border-color .18s, transform .18s;
+    }
+
+    .member:hover {
+      background: rgba(255,255,255,.1);
+      border-color: rgba(255,255,255,.2);
+      transform: translateY(-3px);
+    }
+
+    .m-av {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: .92rem;
+      color: #fff;
+      margin: 0 auto 12px;
+    }
+
+    .av1 { background: linear-gradient(135deg,#16a34a,#0ea5e9); }
+    .av2 { background: linear-gradient(135deg,#0ea5e9,#6366f1); }
+    .av3 { background: linear-gradient(135deg,#d97706,#e11d48); }
+    .av4 { background: linear-gradient(135deg,#6366f1,#ec4899); }
+    .av5 { background: linear-gradient(135deg,#16a34a,#d97706); }
+
+    .member h3 { font-family: 'Syne', sans-serif; font-size: .84rem; font-weight: 700; color: #fff; line-height: 1.3; margin-bottom: 5px; }
+    .member p  { font-size: .7rem; color: rgba(255,255,255,.42); line-height: 1.4; }
+
+    /* ── CONTACTO ── */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 48px;
+    }
+
+    .contact-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+      color: inherit;
+      transition: box-shadow .18s, transform .18s, border-color .18s;
+    }
+
+    .contact-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+    .cc-email:hover { border-color: var(--eco); }
+    .cc-wa:hover    { border-color: #25d366; }
+    .cc-gh:hover    { border-color: var(--ink); }
+    .cc-pdf:hover   { border-color: var(--rose); }
+
+    .cc-ico {
+      width: 46px; height: 46px;
+      border-radius: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+
+    .cc-email .cc-ico { background: var(--eco-light); }
+    .cc-wa    .cc-ico { background: #dcfce7; }
+    .cc-gh    .cc-ico { background: #f3f4f6; }
+    .cc-pdf   .cc-ico { background: var(--rose-light); }
+
+    .cc-body strong { display: block; font-family: 'Syne', sans-serif; font-size: .9rem; font-weight: 700; color: var(--ink); margin-bottom: 3px; }
+    .cc-body span   { font-size: .8rem; color: var(--muted); }
+
+    .cc-arr { margin-left: auto; color: var(--muted); font-size: 1rem; transition: transform .15s; }
+    .contact-card:hover .cc-arr { transform: translate(2px,-2px); }
+
+    .contact-bottom {
+      margin-top: 20px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px 26px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .contact-bottom strong { font-family: 'Syne', sans-serif; font-size: .92rem; color: var(--ink); }
+    .contact-bottom p      { font-size: .82rem; color: var(--muted); margin-top: 2px; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink-soft);
+      color: rgba(255,255,255,.45);
+      padding: 36px 40px;
+    }
+
+    .footer-inner {
+      max-width: 1140px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .footer-brand { display: flex; align-items: center; gap: 9px; text-decoration: none; }
+    .footer-brand img { height: 28px; width: 28px; border-radius: 5px; object-fit: contain; }
+    .footer-brand span { font-family: 'Syne', sans-serif; font-weight: 700; color: #fff; font-size: .92rem; }
+
+    .footer-copy { font-size: .76rem; text-align: center; }
+    .footer-copy strong { color: rgba(255,255,255,.7); }
+
+    .footer-right { display: flex; align-items: center; gap: 9px; }
+    .footer-right img { height: 26px; width: 26px; border-radius: 4px; object-fit: cover; }
+    .footer-right span { font-size: .75rem; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes slideUp {
+      from { opacity:0; transform:translateY(20px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    .fi { opacity:0; transform:translateY(14px); transition: opacity .5s, transform .5s; }
+    .fi.vis { opacity:1; transform:translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      .steps-grid { grid-template-columns: repeat(2,1fr); }
+      .team-grid  { grid-template-columns: repeat(3,1fr); }
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 18px; }
+      .nav-links { display: none; }
+      .hero-wrap { grid-template-columns:1fr; padding:96px 20px 56px; gap:36px; }
+      .hero-card { order:-1; }
+      .section { padding:60px 20px; }
+      .tech-layout,
+      .carrera-layout,
+      .contact-grid { grid-template-columns:1fr; }
+      .steps-grid { grid-template-columns:1fr; }
+      .team-grid  { grid-template-columns:repeat(2,1fr); }
+      .footer-inner { flex-direction:column; text-align:center; }
+      .contact-bottom { flex-direction:column; align-items:flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<nav>
+  <a href="#inicio" class="nav-brand">
+    <img src="logo.png" alt="EcoRecompensa" onerror="this.style.display='none'"/>
+    <span class="nav-brand-text">Eco<span>Recompensa</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#funcionamiento">Funcionamiento</a></li>
+    <li><a href="#tecnologia">Tecnología</a></li>
+    <li><a href="#carrera">La Carrera</a></li>
+    <li><a href="#equipo">Equipo</a></li>
+    <li><a href="PROYECTO.pdf" target="_blank" class="nav-cta">📄 Ver Proyecto</a></li>
+  </ul>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section id="inicio">
+  <div class="hero-wrap">
+    <div style="animation: slideUp .5s ease both;">
+      <div class="hero-eyebrow">♻ Proyecto Estudiantil · UNAJ 2026</div>
+      <h1>Recicla una lata.<br/>Gana una <em>recompensa</em>.</h1>
+      <p class="hero-desc">
+        EcoRecompensa es una máquina automática de reciclaje de latas controlada por un Arduino Nano y una Raspberry Pi 5. El sistema utiliza neumática, sensores ultrasónicos, relés y comunicación serial para detectar, aplastar y contabilizar latas recicladas, generando automáticamente códigos de recompensa mediante una interfaz desarrollada en Python.
+      </p>
+      <div class="hero-actions">
+        <a href="PROYECTO.pdf" target="_blank" class="btn btn-dark">📄 Descargar Proyecto</a>
+        <a href="#funcionamiento" class="btn btn-ghost">Ver cómo funciona →</a>
+      </div>
+    </div>
+
+    <div class="hero-card">
+      <img src="logo.png" alt="Logo EcoRecompensa" class="hero-card-logo" onerror="this.style.display='none'"/>
+      <h3>EcoRecompensa</h3>
+      <p>Sistema inteligente de reciclaje con recompensa automática</p>
+      <div class="stat-row">
+        <div class="stat-box se"><div class="num">1 lata</div><div class="lbl">= 1 código único</div></div>
+        <div class="stat-box ss"><div class="num">100%</div><div class="lbl">automatizado</div></div>
+      </div>
+      <div class="tag-list">
+        <span class="tag t-eco">Arduino Nano</span>
+        <span class="tag t-sky">Raspberry Pi 5</span>
+        <span class="tag t-amb">Neumática</span>
+        <span class="tag t-rose">Python</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- ══ FUNCIONAMIENTO ══ -->
+<section id="funcionamiento" class="section">
+  <div class="section-inner">
+    <span class="eyebrow ey-eco">Proceso</span>
+    <h2 class="s-title fi">¿Cómo funciona?</h2>
+    <p class="s-sub fi">El sistema automatiza el reciclaje mediante neumática, sensores ultrasónicos, relés y comunicación serial entre Arduino Nano y Raspberry Pi 5.</p>
+
+    <div class="steps-grid">
+
+      <div class="step fi">
+        <div class="step-bar"></div>
+        <div class="step-num">PASO 01</div>
+        <span class="step-icon">🟢</span>
+        <h3>Inicio del sistema</h3>
+        <p>
+          El usuario presiona el botón START y el Arduino Nano inicia automáticamente la secuencia del sistema neumático. También existe un botón rojo de parada de emergencia para detener todo el proceso inmediatamente.
+        </p>
+      </div>
+
+      <div class="step fi">
+        <div class="step-bar"></div>
+        <div class="step-num">PASO 02</div>
+        <span class="step-icon">💨</span>
+        <h3>Empuje de la lata</h3>
+        <p>
+          El Arduino activa el Relé 1 para accionar una válvula neumática 3/2 que mueve el cilindro neumático 1, empujando la lata hacia una zona inferior. Luego el Relé 3 devuelve el cilindro a su posición inicial.
+        </p>
+      </div>
+
+      <div class="step fi">
+        <div class="step-bar"></div>
+        <div class="step-num">PASO 03</div>
+        <span class="step-icon">📡</span>
+        <h3>Detección y aplastado</h3>
+        <p>
+          Un sensor ultrasónico detecta la presencia de la lata y el Arduino activa el Relé 2, controlando una válvula 5/2 que distribuye aire comprimido hacia dos cilindros neumáticos que aplastan la lata simultáneamente.
+        </p>
+      </div>
+
+      <div class="step fi">
+        <div class="step-bar"></div>
+        <div class="step-num">PASO 04</div>
+        <span class="step-icon">🖥️</span>
+        <h3>Registro y recompensa</h3>
+        <p>
+          Cada vez que una lata es reciclada, el Arduino envía la palabra "RECICLADA" mediante comunicación serial a la Raspberry Pi 5, donde una interfaz en Python contabiliza las latas recicladas y genera códigos de recompensa automáticamente.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- ══ TECNOLOGÍA ══ -->
+<section id="tecnologia" class="section section-alt">
+  <div class="section-inner">
+    <span class="eyebrow ey-sky">Hardware &amp; Software</span>
+    <h2 class="s-title fi">Tecnología integrada</h2>
+    <p class="s-sub fi">EcoRecompensa integra control electrónico, automatización neumática y comunicación serial entre Arduino Nano y Raspberry Pi 5 para automatizar completamente el proceso de reciclaje y generación de recompensas.</p>
+
+    <div class="tech-layout">
+      <div class="tech-img fi">
+        <img src="carrera.jpg" alt="Laboratorio Ing. Mecatrónica UNAJ" onerror="this.style.background='#f3f4f6'"/>
+      </div>
+      <div class="fi">
+        <ul class="tech-list">
+          <li class="tech-item">
+            <div class="ti ti-e">🔌</div>
+            <div><strong>Arduino Nano</strong><span>Controla los relés, botones START y STOP, sensores ultrasónicos y toda la secuencia neumática del sistema.</span></div>
+          </li>
+          <li class="tech-item">
+            <div class="ti ti-s">💨</div>
+            <div><strong>Minicilindros neumáticos</strong><span>El cilindro neumático 1 desplaza la lata y los cilindros 2 y 3 trabajan simultáneamente para aplastarla mediante aire comprimido.</span></div>
+          </li>
+          <li class="tech-item">
+            <div class="ti ti-a">📡</div>
+            <div><strong>Sensor ultrasónico</strong><span>Detecta la presencia de la lata y permite que el sistema funcione automáticamente en bucle mientras existan latas por reciclar.</span></div>
+          </li>
+          <li class="tech-item">
+            <div class="ti ti-r">🖥️</div>
+            <div><strong>Raspberry Pi 5</strong><span>Lee la comunicación serial del Arduino y ejecuta la interfaz gráfica de recompensas.</span></div>
+          </li>
+          <li class="tech-item">
+            <div class="ti ti-k">🐍</div>
+            <div><strong>Software en Python</strong><span>La interfaz desarrollada en Python lee el monitor serial, contabiliza las latas recicladas y genera códigos de recompensa automáticamente.</span></div>
+          </li>
+        </ul>
+        <div class="chips">
+          <span class="tag t-eco">Arduino Nano</span>
+          <span class="tag t-sky">Raspberry Pi 5</span>
+          <span class="tag t-amb">Neumática</span>
+          <span class="tag t-rose">Python</span>
+          <span class="tag t-eco">Serial UART</span>
+          <span class="tag t-sky">Sensor Ultrasónico</span>
+          <span class="tag t-amb">Relés</span>
+          <span class="tag t-rose">Válvulas 3/2 y 5/2</span>
+          <span class="tag t-eco">Comunicación Serial</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- ══ CARRERA ══ -->
+<section id="carrera" class="section">
+  <div class="section-inner">
+    <span class="eyebrow ey-amb">Institución</span>
+    <h2 class="s-title fi">Ingeniería Mecatrónica — UNAJ</h2>
+
+    <div class="carrera-layout">
+      <div class="carrera-text fi">
+        <div class="unaj-badge">
+          <img src="carrera.jpg" alt="UNAJ" onerror="this.style.display='none'"/>
+          <div>
+            <strong>Universidad Nacional de Juliaca (UNAJ)</strong>
+            <span>Juliaca, Puno — Perú</span>
+          </div>
+        </div>
+        <p>La Carrera Profesional de Ingeniería Mecatrónica de la UNAJ forma profesionales con sólidas competencias en electrónica, mecánica, sistemas de control y programación embebida.</p>
+        <p>EcoRecompensa nace como un proyecto de automatización aplicado al reciclaje, integrando electrónica, neumática industrial, programación embebida y desarrollo de interfaces gráficas para ofrecer una solución tecnológica orientada al cuidado ambiental.</p>
+        <p>El proyecto integra disciplinas transversales de la mecatrónica: control automático, electrónica digital, neumática y desarrollo de software, demostrando la capacidad formativa de la carrera.</p>
+        <div style="margin-top:26px; display:flex; gap:12px; flex-wrap:wrap;">
+          <a href="PROYECTO.pdf" target="_blank" class="btn btn-eco">📄 Descargar Proyecto PDF</a>
+          <a href="mailto:12willianscondori@gmail.com?subject=Consulta%20EcoRecompensa" class="btn btn-ghost">✉ Contactar equipo</a>
+        </div>
+      </div>
+      <div class="carrera-img fi">
+        <img src="carrera.jpg" alt="Carrera de Ingeniería Mecatrónica UNAJ"/>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ EQUIPO ══ -->
+<section id="equipo" class="section section-dark">
+  <div class="section-inner">
+    <span class="eyebrow ey-dark">Equipo</span>
+    <h2 class="s-title od fi">Creadores del proyecto</h2>
+    <p class="s-sub od fi">Estudiantes de la Carrera Profesional de Ingeniería Mecatrónica — Universidad Nacional de Juliaca (UNAJ).</p>
+
+    <div class="team-grid">
+      <div class="member fi">
+        <div class="m-av av1">CA</div>
+        <h3>Condori Alvarez Willians</h3>
+        <p>Estudiante de Ing. Mecatrónica</p>
+      </div>
+      <div class="member fi">
+        <div class="m-av av2">AU</div>
+        <h3>Arapa Uturunco Jose Miguel</h3>
+        <p>Estudiante de Ing. Mecatrónica</p>
+      </div>
+      <div class="member fi">
+        <div class="m-av av3">BG</div>
+        <h3>Benites Gallegos Will Jhon</h3>
+        <p>Estudiante de Ing. Mecatrónica</p>
+      </div>
+      <div class="member fi">
+        <div class="m-av av4">MP</div>
+        <h3>Mamani Pampa Kevin Jesus</h3>
+        <p>Estudiante de Ing. Mecatrónica</p>
+      </div>
+      <div class="member fi">
+        <div class="m-av av5">SV</div>
+        <h3>Sihuacollo Vargas Alan</h3>
+        <p>Estudiante de Ing. Mecatrónica</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CONTACTO ══ -->
+<section id="contacto" class="section section-alt">
+  <div class="section-inner">
+    <span class="eyebrow ey-eco">Contacto</span>
+    <h2 class="s-title fi">¿Tienes una consulta?</h2>
+    <p class="s-sub fi">Estamos abiertos a consultas, colaboraciones y sugerencias. Elige el canal que prefieras.</p>
+
+    <div class="contact-grid">
+      <a href="mailto:12willianscondori@gmail.com?subject=Consulta%20sobre%20EcoRecompensa&body=Hola%20equipo%20EcoRecompensa%2C%0A%0AMe%20comunicо%20para%3A" class="contact-card cc-email fi">
+        <div class="cc-ico">📧</div>
+        <div class="cc-body">
+          <strong>Correo electrónico</strong>
+          <span>12willianscondori@gmail.com<br/>Respuesta en 24 – 48 horas</span>
+        </div>
+        <span class="cc-arr">↗</span>
+      </a>
+
+      <a href="PROYECTO.pdf" target="_blank" class="contact-card cc-pdf fi">
+        <div class="cc-ico">📄</div>
+        <div class="cc-body">
+          <strong>Documento del Proyecto</strong>
+          <span>Informe técnico completo con toda la documentación en PDF.</span>
+        </div>
+        <span class="cc-arr">↗</span>
+      </a>
+
+      <a href="https://wa.me/51999999999?text=Hola%2C%20vi%20el%20proyecto%20EcoRecompensa%20de%20la%20UNAJ%20y%20quisiera%20m%C3%A1s%20informaci%C3%B3n." target="_blank" class="contact-card cc-wa fi">
+        <div class="cc-ico">💬</div>
+        <div class="cc-body">
+          <strong>WhatsApp</strong>
+          <span>Escríbenos por WhatsApp para consultas rápidas sobre el proyecto.</span>
+        </div>
+        <span class="cc-arr">↗</span>
+      </a>
+
+      <a href="https://github.com/" target="_blank" class="contact-card cc-gh fi">
+        <div class="cc-ico">🐙</div>
+        <div class="cc-body">
+          <strong>Repositorio GitHub</strong>
+          <span>Código fuente y documentación técnica disponibles en GitHub.</span>
+        </div>
+        <span class="cc-arr">↗</span>
+      </a>
+    </div>
+
+    <div class="contact-bottom fi">
+      <span style="font-size:1.7rem">📍</span>
+      <div>
+        <strong>Universidad Nacional de Juliaca (UNAJ)</strong>
+        <p>Carrera Profesional de Ingeniería Mecatrónica · Juliaca, Puno, Perú</p>
+      </div>
+      <a href="mailto:12willianscondori@gmail.com?subject=Consulta%20EcoRecompensa" class="btn btn-eco" style="margin-left:auto;">✉ Enviar mensaje</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="footer-inner">
+    <a href="#inicio" class="footer-brand">
+      <img src="logo.png" alt="EcoRecompensa" onerror="this.style.display='none'"/>
+      <span>EcoRecompensa</span>
+    </a>
+    <p class="footer-copy">
+      © 2024 <strong>Universidad Nacional de Juliaca (UNAJ)</strong> — Ingeniería Mecatrónica.<br/>
+      Proyecto estudiantil de innovación ambiental.
+    </p>
+    <div class="footer-right">
+      <img src="carrera.jpg" alt="UNAJ" onerror="this.style.display='none'"/>
+      <span>UNAJ · Juliaca, Puno, Perú</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const io = new IntersectionObserver(
+    entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); }),
+    { threshold: 0.1 }
+  );
+  document.querySelectorAll('.fi').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
